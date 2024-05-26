@@ -6,78 +6,73 @@ Protecting against client-side open redirect vulnerabilities involves validating
 
 Example:
 
-    ```javascript
-    const ALLOWED_DOMAINS = ['trusted.com', 'example.com'];
+```javascript
+const ALLOWED_DOMAINS = ['trusted.com', 'example.com'];
 
-    function isSafeUrl(url) {
-    try {
+function isSafeUrl(url) {
+  try {
     const parsedUrl = new URL(url);
     return ALLOWED_DOMAINS.includes(parsedUrl.hostname);
-    } catch (err) {
+  } catch (err) {
     return false;
-    }
-    }
-
-    ```
+  }
+}
+```
 
 2. **Sanitize Input**: Use functions to encode and decode URLs properly to prevent injection attacks.
 
 Example:
 
-    ```javascript
-    const encodedUrl = encodeURIComponent(userInputUrl);
-    const decodedUrl = decodeURIComponent(encodedUrl);
-
-    ```
+```javascript
+const encodedUrl = encodeURIComponent(userInputUrl);
+const decodedUrl = decodeURIComponent(encodedUrl);
+```
 
 3. **Use Secure Coding Practices**: Avoid directly inserting user input into URLs without proper checks.
 
 Example:
 
-    ```javascript
-    function redirectToUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('url');
+```javascript
+function redirectToUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get('url');
 
-    if (redirectUrl && isSafeUrl(redirectUrl)) {
-        const encodedUrl = encodeURIComponent(redirectUrl);
-        window.location.href = decodeURIComponent(encodedUrl);
-    } else {
-        console.error('Invalid redirect URL');
-        }
-    }
+  if (redirectUrl && isSafeUrl(redirectUrl)) {
+    const encodedUrl = encodeURIComponent(redirectUrl);
+    window.location.href = decodeURIComponent(encodedUrl);
+  } else {
+    console.error('Invalid redirect URL');
+  }
+}
 
-    redirectToUrl();
-
-
-    ```
+redirectToUrl();
+```
 
 4. **Avoid Dynamic Redirection**: Limit the use of dynamic redirection and, when necessary, ensure it's done securely.
 
 Example:
 
-    ```javascript
-    const ALLOWED_REDIRECTS = {
-    'dashboard': '/dashboard',
-    'profile': '/profile',
-    'settings': '/settings'
-    };
+```javascript
+const ALLOWED_REDIRECTS = {
+  'dashboard': '/dashboard',
+  'profile': '/profile',
+  'settings': '/settings'
+};
 
-    function getRedirectPath(key) {
-    return ALLOWED_REDIRECTS[key] || '/';
-    }
+function getRedirectPath(key) {
+  return ALLOWED_REDIRECTS[key] || '/';
+}
 
-    function redirectToPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectKey = urlParams.get('page');
-    const redirectPath = getRedirectPath(redirectKey);
+function redirectToPage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectKey = urlParams.get('page');
+  const redirectPath = getRedirectPath(redirectKey);
 
-    window.location.href = redirectPath;
-    }
+  window.location.href = redirectPath;
+}
 
-    redirectToPage();
-
-    ```
+redirectToPage();
+```
 
 ### Example Code to Prevent Client-Side Open Redirects
 
@@ -136,97 +131,85 @@ redirectToUrl();
 
 Example:
 
-    ```javascript
-
-    const encodedUrl = encodeURIComponent(userInputUrl);
-    const decodedUrl = decodeURIComponent(encodedUrl);
-
-    ```
+```javascript
+const encodedUrl = encodeURIComponent(userInputUrl);
+const decodedUrl = decodeURIComponent(encodedUrl);
+```
 
 2. **User Confirmation**: Prompt users to confirm redirections, especially if the destination URL is external or not commonly used.
 
 Example:
 
-    ```javascript
+```javascript
+function redirectToUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redirectUrl = urlParams.get('url');
 
-    function redirectToUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectUrl = urlParams.get('url');
+  if (redirectUrl && isSafeUrl(redirectUrl)) {
+    if (confirm(`You are being redirected to ${redirectUrl}. Do you want to proceed?`)) {
+      window.location.href = redirectUrl;
+    }
+  } else {
+    console.error('Invalid redirect URL');
+  }
+}
 
-        if (redirectUrl && isSafeUrl(redirectUrl)) {
-          if (confirm(`You are being redirected to ${redirectUrl}. Do you want to proceed?`)) {
-            window.location.href = redirectUrl;
-          }
-        } else {
-          console.error('Invalid redirect URL');
-        }
-      }
-
-      redirectToUrl();
-
-    ```
+redirectToUrl();
+```
 
 3. **Avoid Query Parameters for Sensitive Actions**: Where possible, avoid using query parameters for actions that involve redirection. Use server-side logic to handle such actions securely.
 
 Example:
 
-  Instead of:
+Instead of:
 
-  ```plaintext
+```plaintext
+https://example.com/login?redirect=http://trusted.com
+```
 
-  https://example.com/login?redirect=http://trusted.com
-  ```
+Use:
 
-  Use:
-
-  ```javascript
-
-  // Server-side redirection handling
-  app.post('/login', (req, res) => {
-    // Authentication logic
-    if (authenticated) {
-      res.redirect('/dashboard');
-    } else {
-      res.redirect('/login');
-    }
-  });
-
-  ```
+```javascript
+// Server-side redirection handling
+app.post('/login', (req, res) => {
+  // Authentication logic
+  if (authenticated) {
+    res.redirect('/dashboard');
+  } else {
+    res.redirect('/login');
+  }
+});
+```
 
 4. **Content Security Policy (CSP)**: Implement CSP headers to restrict the sources from which scripts can be loaded and executed, reducing the risk of malicious scripts being run on the client side.
 
 Example CSP Header:
 
-  ```plaintext
-
-    Content-Security-Policy: default-src 'self'; script-src 'self' 'https://trusted.com'; object-src 'none'; style-src 'self' 'https://trusted.com';
-
-  ```
+```plaintext
+Content-Security-Policy: default-src 'self'; script-src 'self' 'https://trusted.com'; object-src 'none'; style-src 'self' 'https://trusted.com';
+```
 
 Implementing CSP in Express.js:
 
-  ```javascript
+```javascript
+const express = require('express');
+const helmet = require('helmet');
+const app = express();
 
-  const express = require('express');
-  const helmet = require('helmet');
-  const app = express();
+// Use helmet to set CSP headers
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", 'https://trusted.com'],
+    objectSrc: ["'none'"],
+    styleSrc: ["'self'", 'https://trusted.com']
+  }
+}));
 
-  // Use helmet to set CSP headers
-  app.use(helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'https://trusted.com'],
-      objectSrc: ["'none'"],
-      styleSrc: ["'self'", 'https://trusted.com']
-    }
-  }));
-
-  app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-  });
-
-
-  ```
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
 
 ### Example with User Confirmation
 
