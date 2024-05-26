@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <a href="?url=https://ygi.li">Search</a>
+
+    <script>
+      const ALLOWED_DOMAINS = ["trusted.com", "example.com", "ygi.li"];
+
+      function isSafeUrl(url) {
+        try {
+          const parsedUrl = new URL(url);
+          return ALLOWED_DOMAINS.includes(parsedUrl.hostname);
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function redirectToUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get("url");
+
+        if (redirectUrl && isSafeUrl(redirectUrl)) {
+          if (
+            confirm(
+              `You are being redirected to ${redirectUrl}. Do you want to proceed?`
+            )
+          ) {
+            window.location.href = redirectUrl;
+          }
+        } else {
+          console.error("Invalid redirect URL");
+        }
+      }
+
+      redirectToUrl();
+    </script>
+  </body>
+</html>
