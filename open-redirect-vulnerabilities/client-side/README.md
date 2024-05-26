@@ -134,11 +134,99 @@ redirectToUrl();
 
 1. **Input Encoding**: Always encode user input using `encodeURIComponent` and decode it using `decodeURIComponent` to prevent injection attacks.
 
+Example:
+
+    ```javascript
+
+    const encodedUrl = encodeURIComponent(userInputUrl);
+    const decodedUrl = decodeURIComponent(encodedUrl);
+
+    ```
+
 2. **User Confirmation**: Prompt users to confirm redirections, especially if the destination URL is external or not commonly used.
+
+Example:
+
+    ```javascript
+
+    function redirectToUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('url');
+
+        if (redirectUrl && isSafeUrl(redirectUrl)) {
+          if (confirm(`You are being redirected to ${redirectUrl}. Do you want to proceed?`)) {
+            window.location.href = redirectUrl;
+          }
+        } else {
+          console.error('Invalid redirect URL');
+        }
+      }
+
+      redirectToUrl();
+
+    ```
 
 3. **Avoid Query Parameters for Sensitive Actions**: Where possible, avoid using query parameters for actions that involve redirection. Use server-side logic to handle such actions securely.
 
+Example:
+
+  Instead of:
+
+  ```plaintext
+
+  https://example.com/login?redirect=http://trusted.com
+  ```
+
+  Use:
+
+  ```javascript
+
+  // Server-side redirection handling
+  app.post('/login', (req, res) => {
+    // Authentication logic
+    if (authenticated) {
+      res.redirect('/dashboard');
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+  ```
+
 4. **Content Security Policy (CSP)**: Implement CSP headers to restrict the sources from which scripts can be loaded and executed, reducing the risk of malicious scripts being run on the client side.
+
+Example CSP Header:
+
+  ```plaintext
+
+    Content-Security-Policy: default-src 'self'; script-src 'self' 'https://trusted.com'; object-src 'none'; style-src 'self' 'https://trusted.com';
+
+  ```
+
+Implementing CSP in Express.js:
+
+  ```javascript
+
+  const express = require('express');
+  const helmet = require('helmet');
+  const app = express();
+
+  // Use helmet to set CSP headers
+  app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://trusted.com'],
+      objectSrc: ["'none'"],
+      styleSrc: ["'self'", 'https://trusted.com']
+    }
+  }));
+
+  app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+  });
+
+
+  ```
 
 ### Example with User Confirmation
 
