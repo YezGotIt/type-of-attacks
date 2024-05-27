@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1QTZ3w9oUYq5IXAG8r/fNFhtxlchMfsplDfZUeGyf4dnMdm9dO9PdnQ63nFpr0fH+LByMphcQ2oTc4aFZuM2hg==",
+  "dgSpecHash": "zc9tCooRbAJqhz1bI4ZlC3ZpcYqlq35grSQuFRgaHUECth+K3e4QwgmFnzaegwdnKz+QcBRp5Um/SdUH/pyvUA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\avina\\OneDrive\\Desktop\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
+  "projectFilePath": "C:\\Users\\avina\\OneDrive\\Desktop\\types-of-attacks\\open-redirect-vulnerabilities\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

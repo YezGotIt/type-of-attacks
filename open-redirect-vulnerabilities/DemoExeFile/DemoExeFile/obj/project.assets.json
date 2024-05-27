@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\avina\\OneDrive\\Desktop\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
+      "projectUniqueName": "C:\\Users\\avina\\OneDrive\\Desktop\\types-of-attacks\\open-redirect-vulnerabilities\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
       "projectName": "DemoExeFile",
-      "projectPath": "C:\\Users\\avina\\OneDrive\\Desktop\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
+      "projectPath": "C:\\Users\\avina\\OneDrive\\Desktop\\types-of-attacks\\open-redirect-vulnerabilities\\DemoExeFile\\DemoExeFile\\DemoExeFile.csproj",
       "packagesPath": "C:\\Users\\avina\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\avina\\OneDrive\\Desktop\\DemoExeFile\\DemoExeFile\\obj\\",
+      "outputPath": "C:\\Users\\avina\\OneDrive\\Desktop\\types-of-attacks\\open-redirect-vulnerabilities\\DemoExeFile\\DemoExeFile\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
